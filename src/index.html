@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nothing News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@700;900&family=Space+Grotesk:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="widget" id="widget">
+    <header class="head" data-tauri-drag-region>
+      <div class="brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <h1 class="brand-title" id="feedLabel">NEWSROOM</h1>
+      </div>
+      <div class="actions">
+        <button class="icon-btn" id="btnRefresh" title="Actualizar" aria-label="Actualizar">
+          <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5"/></svg>
+        </button>
+        <button class="icon-btn" id="btnTheme" title="Cambiar tema" aria-label="Cambiar tema">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16" /><path d="M12 4a8 8 0 0 1 0 16z" class="fill"/></svg>
+        </button>
+        <button class="icon-btn" id="btnPin" title="Mantener encima" aria-label="Mantener encima" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M9 4h6l-1 6 3 3H7l3-3zM12 13v7"/></svg>
+        </button>
+        <button class="icon-btn" id="btnClose" title="Cerrar" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="list" id="list" aria-live="polite"></section>
+
+    <footer class="foot">
+      <span id="status">Cargando…</span>
+      <a href="#" id="openForum">nothing.community ↗</a>
+    </footer>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

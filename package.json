@@ -1,0 +1,14 @@
+{
+  "name": "nothing-news-widget",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Widget de escritorio para Windows con las últimas noticias de nothing.community",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}

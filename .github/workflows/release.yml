@@ -1,0 +1,47 @@
+name: Release Windows
+
+# Se ejecuta al subir una etiqueta tipo v0.1.0, o a mano desde la pestaña Actions.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Compilar y publicar release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'v__VERSION__' }}
+          releaseName: "Nothing Newsroom v__VERSION__"
+          releaseBody: |
+            Widget de escritorio para Windows con las últimas noticias del Newsroom de nothing.community.
+
+            **Instalación:** descarga el `.exe` (instalador NSIS) o el `.msi` y ejecútalo.
+            Windows SmartScreen puede avisar porque el instalador no está firmado: pulsa "Más información" → "Ejecutar de todas formas".
+
+            Proyecto no oficial, sin relación con Nothing Technology Limited.
+          releaseDraft: false
+          prerelease: true
