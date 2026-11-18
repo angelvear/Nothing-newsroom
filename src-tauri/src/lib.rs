@@ -4,12 +4,26 @@ use std::time::Duration;
 /// así que si Nothing migra a otra plataforma solo hay que tocar este archivo.
 const FORUM_BASE: &str = "https://nothing.community";
 
-/// Pide las últimas discusiones al API JSON de Flarum y devuelve el JSON tal cual.
+/// Ordenaciones permitidas del API de Flarum.
+const ALLOWED_SORTS: [&str; 3] = ["-createdAt", "-lastPostedAt", "-commentCount"];
+
+/// Pide discusiones al API JSON de Flarum y devuelve el JSON tal cual.
 /// Se hace desde Rust (y no con fetch en el WebView) para evitar los bloqueos de CORS.
+///
+/// - `tag`: slug de etiqueta (p. ej. "newsroom"); vacío = todo el foro.
+/// - `sort`: "-createdAt" (más nuevas), "-lastPostedAt" (actividad, como la portada)...
+/// - `limit`: 1..=50 (máximo que admite Flarum por página).
 #[tauri::command]
-async fn fetch_news(tag: Option<String>, limit: Option<u32>) -> Result<String, String> {
-    let limit = limit.unwrap_or(8).clamp(1, 20).to_string();
+async fn fetch_news(
+    tag: Option<String>,
+    sort: Option<String>,
+    limit: Option<u32>,
+) -> Result<String, String> {
+    let limit = limit.unwrap_or(8).clamp(1, 50).to_string();
     let tag = tag.map(|t| t.trim().to_string()).filter(|t| !t.is_empty());
+    let sort = sort
+        .filter(|s| ALLOWED_SORTS.contains(&s.as_str()))
+        .unwrap_or_else(|| "-createdAt".to_string());
 
     let client = reqwest::Client::builder()
         .user_agent("NothingNewsWidget/0.1 (desktop widget)")
@@ -21,7 +35,7 @@ async fn fetch_news(tag: Option<String>, limit: Option<u32>) -> Result<String, S
     // permite ese include, repetimos la petición sin él.
     for include in ["user,tags,firstPost", "user,tags"] {
         let mut query: Vec<(&str, &str)> = vec![
-            ("sort", "-createdAt"),
+            ("sort", sort.as_str()),
             ("page[limit]", limit.as_str()),
             ("include", include),
         ];

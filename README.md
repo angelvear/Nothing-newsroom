@@ -45,10 +45,16 @@ src-tauri/
 
 ## Cómo funciona
 
-- nothing.community funciona con **Flarum**, así que el widget llama a
-  `GET /api/discussions?sort=-createdAt&filter[tag]=newsroom&include=user,tags,firstPost`.
-- La petición la hace Rust (`reqwest`) para evitar los bloqueos de CORS del WebView.
-- Si la etiqueta `newsroom` no devuelve nada, el widget muestra las últimas publicaciones de todo el foro.
+nothing.community funciona con **Flarum**. El widget llama a su API `GET /api/discussions` desde Rust
+(`reqwest`) para evitar los bloqueos de CORS del WebView. Las pestañas de la cabecera eligen qué se muestra:
+
+| Pestaña       | Qué muestra                                         | Petición                                          |
+|---------------|-----------------------------------------------------|---------------------------------------------------|
+| **Newsroom**  | Anuncios oficiales                                  | `filter[tag]=newsroom&sort=-createdAt`            |
+| **Portada**   | Lo mismo que la home del foro (última actividad)    | `sort=-lastPostedAt`                              |
+| **Populares** | Las discusiones con más respuestas de los últimos 7 días | `sort=-createdAt&page[limit]=50` + orden local por respuestas |
+
+- La pestaña elegida se recuerda entre arranques.
 - Se refresca cada 10 minutos y también al volver a enfocar la ventana, si los datos tienen más de 5 minutos.
 - El punto rojo marca las publicaciones de los últimos 7 días que aún no has abierto.
 - Recuerda la posición, el tamaño, el tema y si estaba fijado encima (plugin `window-state` y `localStorage`).
@@ -57,14 +63,12 @@ src-tauri/
 
 En `src/main.js`, objeto `CONFIG`:
 
-| Clave            | Por defecto | Qué hace                                    |
-|------------------|-------------|---------------------------------------------|
-| `tag`            | `newsroom`  | Slug de la etiqueta del foro que se muestra |
-| `limit`          | `8`         | Número de publicaciones (máx. 20)           |
-| `refreshMinutes` | `10`        | Cada cuánto se actualiza                    |
-
-Para mirar otra etiqueta sin tocar el código, abre las DevTools en `npm run dev` (clic derecho → Inspeccionar)
-y ejecuta: `localStorage.setItem("nnw.tag", "otra-etiqueta")`. Después recarga.
+| Clave            | Por defecto | Qué hace                                         |
+|------------------|-------------|--------------------------------------------------|
+| `limit`          | `8`         | Número de publicaciones por pestaña              |
+| `refreshMinutes` | `10`        | Cada cuánto se actualiza                         |
+| `newsroomTag`    | `newsroom`  | Slug de la etiqueta de anuncios oficiales        |
+| `popularDays`    | `7`         | Ventana de días para la pestaña Populares        |
 
 ## Ideas para siguientes versiones
 

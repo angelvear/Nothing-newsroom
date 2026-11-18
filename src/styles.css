@@ -89,6 +89,36 @@ html, body {
 .icon-btn svg .fill { fill: currentColor; stroke: none; }
 .icon-btn.spinning svg { animation: spin .8s linear infinite; }
 
+/* ---------- Selector de feed ---------- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin: 0 16px 8px;
+  padding: 3px;
+  border-radius: 99px;
+  background: var(--chip);
+}
+.tab {
+  flex: 1;
+  border: 0;
+  border-radius: 99px;
+  padding: 6px 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.tab:hover { color: var(--fg); }
+.tab[aria-selected="true"] {
+  background: var(--bg);
+  color: var(--fg);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
 /* ---------- Lista ---------- */
 .list {
   flex: 1;

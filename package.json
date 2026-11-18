@@ -1,6 +1,6 @@
 {
   "name": "nothing-news-widget",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Widget de escritorio para Windows con las últimas noticias de nothing.community",
   "scripts": {

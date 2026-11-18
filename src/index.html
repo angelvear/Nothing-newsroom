@@ -14,7 +14,7 @@
     <header class="head" data-tauri-drag-region>
       <div class="brand">
         <span class="brand-dot" aria-hidden="true"></span>
-        <h1 class="brand-title" id="feedLabel">NEWSROOM</h1>
+        <h1 class="brand-title">COMMUNITY</h1>
       </div>
       <div class="actions">
         <button class="icon-btn" id="btnRefresh" title="Actualizar" aria-label="Actualizar">
@@ -31,6 +31,12 @@
         </button>
       </div>
     </header>
+
+    <nav class="tabs" role="tablist" aria-label="Tipo de noticias">
+      <button class="tab" role="tab" data-feed="newsroom">Newsroom</button>
+      <button class="tab" role="tab" data-feed="portada">Portada</button>
+      <button class="tab" role="tab" data-feed="populares">Populares</button>
+    </nav>
 
     <section class="list" id="list" aria-live="polite"></section>
 
